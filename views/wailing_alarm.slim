@@ -1,0 +1,57 @@
+link href="http://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet" type="text/css"
+sass:
+  body
+    font-family: 'Raleway'
+    padding: 150px
+    text-align: center
+  .description
+    font-size: 32px
+    font-weight: 500
+    margin-bottom: 20px
+  input.description
+    box-sizing: border-box
+    display: block
+    width: 100%
+  form
+    width: 300px
+    display: inline-block
+    vertical-align: top
+
+form method='post'
+
+  input.description name='description' value=@current_activity.description
+  = @current_activity.starts_at.strftime '%H:%M'
+  |  - 
+  = @current_activity.ends_at.strftime '%H:%M'
+  |  (#{Time.at(@current_activity.ends_at - @current_activity.starts_at - 3600).strftime '%H:%M'})
+  br
+  - possible_expansions.each_with_index do |t, i|
+    input type='radio' name='expand_to' value=t id="expand_to_#{i}" checked=('checked' if i == 0)
+    label for="expand_to_#{i}"
+      = t.strftime '%H:%M'
+      svg xmlns="http://www.w3.org/2000/svg" version="1.1" height=50 width=50
+        path fill='red' d=activity_expansion_svg_path(t)
+    br
+  input type='hidden' name='activity_id' value=@current_activity.id
+  input type='submit' value='Expand current'
+
+form method='post'
+  input.description name='description'
+  - i ||= 0; 
+  - possible_start_times.each do |label, t|
+    input type='radio' name='starts_at' value=t id="starts_at_#{i}" checked=('checked' if i == 0)
+    label for="starts_at_#{i}"
+      = label
+    br
+    - i += 1
+  - possible_expansions.each_with_index do |t, i|
+    input type='radio' name='ends_at' value=t id="ends_at_#{i}" checked=('checked' if i == 0)
+    label for="ends_at_#{i}"
+      = t.strftime '%H:%M'
+      svg xmlns="http://www.w3.org/2000/svg" version="1.1" height=50 width=50
+        path fill='red' d=activity_expansion_svg_path(t)
+    br
+  input name='create_new' type='submit' value='Create new'
+
+javascript:
+  document.getElementsByTagName('input')[0].focus()

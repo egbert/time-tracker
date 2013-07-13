@@ -1,0 +1,4 @@
+bin/*
+.bundle/config
+time_tracker
+tmp/*

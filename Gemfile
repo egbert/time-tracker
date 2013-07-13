@@ -1,0 +1,10 @@
+source 'http://rubygems.org/'
+
+gem 'minitest', '~> 4.2'
+gem 'activerecord'
+gem 'sqlite3'
+gem 'sinatra'
+gem 'haml'
+gem 'slim'
+gem 'coffee-script'
+gem 'sass'
